@@ -95,13 +95,21 @@ class NseUtils:
         full details are provided in a dataframe
         :return:
         """
-        data = self.session.get(f'https://www.nseindia.com/api/holiday-master?type={'Clearing'.lower()}',
+        response = self.session.get(f'https://www.nseindia.com/api/holiday-master?type={'Clearing'.lower()}',
                                 headers=self.headers).json()
-        df = pd.DataFrame(list(data.values())[0])
+        data = list(response.values())[0]
+
+        # ✅ Only extract specific keys from each dictionary
+        keys_to_extract = ['tradingDate', 'weekDay','description', 'Sr_no']
+        filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in data]
+
+        df = pd.DataFrame(filtered_data)
+        df.set_index('Sr_no', inplace=True)
         if list_only:
             holiday_list = df['tradingDate'].tolist()
             return holiday_list
-        return df
+        else:
+            return df
 
     def trading_holidays(self, list_only=False):
         """
@@ -110,9 +118,16 @@ class NseUtils:
         full details are provided in a dataframe
         :return:
         """
-        data = self.session.get(f'https://www.nseindia.com/api/holiday-master?type={'Trading'.lower()}',
+        response = self.session.get(f'https://www.nseindia.com/api/holiday-master?type={'Trading'.lower()}',
                                 headers=self.headers).json()
-        df = pd.DataFrame(list(data.values())[0])
+        data = list(response.values())[0]
+
+        # ✅ Only extract specific keys from each dictionary
+        keys_to_extract = ['tradingDate', 'weekDay','description', 'Sr_no']
+        filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in data]
+
+        df = pd.DataFrame(filtered_data)
+        df.set_index('Sr_no', inplace=True)
         if list_only:
             holiday_list = df['tradingDate'].tolist()
             return holiday_list
@@ -397,13 +412,15 @@ class NseUtils:
         FII and DII trading activity of the day in data frame
         :return: pd.DataFrame
         """
-        url = "https://www.nseindia.com/api/fiidiiTradeReact"
-        # data_json = nse_urlfetch(url).json()
-        data_json = requests.get(url, headers=self.headers)
-        data_df = pd.DataFrame(data_json.json())
+        ref_url = 'https://www.nseindia.com/reports/fii-dii'
+        ref = requests.get(ref_url, headers=self.headers)
+        url = 'https://www.nseindia.com/api/fiidiiTradeReact'
+        response = self.session.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
+        data = response.json()  # Convert response to JSON
+        data_df = pd.DataFrame(data)
         return data_df
 
-    def get_live_option_chain(self, symbol: str, expiry_date: str = None, oi_mode: str = "full", indices=False):
+    def get_live_option_chain(self, symbol: str, expiry_date: str | None = None, oi_mode: str = "full", indices=False):
         """
         get live nse option chain.
         :param symbol: eg:SBIN/BANKNIFTY
@@ -514,7 +531,7 @@ class NseUtils:
         }
         return merged_dict
 
-    def get_index_historic_data(self, index: str, from_date: str = None, to_date: str = None):
+    def get_index_historic_data(self, index: str, from_date: str | None = None, to_date: str | None = None):
         """
         get historical index data set for the specific time period.
         apply the index name as per the nse india site
@@ -714,7 +731,7 @@ class NseUtils:
 
         return gain_dict, loss_dict
 
-    def get_corporate_action(self, from_date_str: str = None, to_date_str: str = None, filter: str = None):
+    def get_corporate_action(self, symbol: str | None = None, from_date_str: str | None = None, to_date_str: str | None = None, filter: str | None = None):
 
         # Fetch Corporate Action data from NSE
         if from_date_str is None:
@@ -727,18 +744,32 @@ class NseUtils:
         try:
             ref_url = 'https://www.nseindia.com/companies-listing/corporate-filings-actions'
             ref = requests.get(ref_url, headers=self.headers)
-            url = f"https://www.nseindia.com/api/corporates-corporateActions?index=equities"
-            # url = f"https://www.nseindia.com/api/corporates-corporateActions?index=equities&from_date={from_date_str}&to_date={to_date_str}"
+
+            if symbol is not None:
+                url = f"https://www.nseindia.com/api/corporates-corporateActions?index=equities&symbol={symbol}"
+            else:
+                url = f"https://www.nseindia.com/api/corporates-corporateActions?index=equities"
+
             data_obj = self.session.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
-            corp_action = pd.DataFrame(data_obj.json())
+            all_data = data_obj.json()
+
+            # ✅ Only extract specific keys from each dictionary
+            keys_to_extract = ['symbol', 'comp','series', 'subject', 'faceVal', 'exDate', 'recDate']
+            filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in all_data]
+
+            corp_action = pd.DataFrame(filtered_data)
+
             if filter is not None:
-                corp_action = corp_action[corp_action['subject'].str.contains(filter, case=False, na=False)]
+                corp_action = corp_action[corp_action['purpose'].str.contains(filter, case=False, na=False)]
+
             return corp_action
-        except:
+
+        except Exception as e:
             print("Error fetching Corporate Action Data. Check your input")
+            print("Details:", e)
             return None
 
-    def get_corporate_announcement(self, from_date_str: str = None, to_date_str: str = None):
+    def get_corporate_announcement(self, from_date_str: str | None = None, to_date_str: str | None = None):
 
         # Fetch Corporate Announcements data from NSE
         if from_date_str is None:
@@ -753,7 +784,12 @@ class NseUtils:
             ref = requests.get(ref_url, headers=self.headers)
             url = f'https://www.nseindia.com/api/corporate-announcements?index=equities&from_date={from_date_str}&to_date={to_date_str}'
             data_obj = self.session.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
-            corp_announcement = pd.DataFrame(data_obj.json())
+
+            # ✅ Only extract specific keys from each dictionary
+            keys_to_extract = ['symbol', 'sm_name','desc', 'attchmntFile', 'attchmntText', 'exchdisstime']
+            filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in data_obj.json()]
+
+            corp_announcement = pd.DataFrame(filtered_data)
             return corp_announcement
         except:
             print("Error fetching Corporate Action Data. Check your input")
@@ -862,17 +898,23 @@ class NseUtils:
             print("Error fetching Corporate Action Data. Check your input")
             return None
 
-    def most_active_equity_stocks_by_volume(self):
+    def most_active_equity_stocks(self, index_str: str):
+        if index_str not in ['volume', 'value']:
+            raise ValueError("Invalid index_str. Use 'volume' or 'value'.")
         try:
             ref_url = 'https://www.nseindia.com/market-data/most-active-equities'
             ref = requests.get(ref_url, headers=self.headers)
-            url = 'https://www.nseindia.com/api/live-analysis-most-active-securities?index=volume'
+            url = f'https://www.nseindia.com/api/live-analysis-most-active-securities?index={index_str}'
             response = self.session.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
 
-            data = response.json()  # Convert response to JSON
+            data = response.json()['data']  # Convert response to JSON
+
+            # ✅ Only extract specific keys from each dictionary
+            keys_to_extract = ['symbol', 'open', 'dayHigh', 'dayLow', 'lastPrice', 'previousClose', 'change', 'pChange', 'totalTradedVolume', 'totalTradedValue', 'yearHigh', 'yearLow', 'lastUpdateTime']
+            filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in data]
 
             # Convert JSON data to a DataFrame
-            df = pd.DataFrame(data['data'])  # Extract the main data list
+            df = pd.DataFrame(filtered_data)  # Extract the main data list
 
             if df.empty:
                 return None
@@ -882,17 +924,23 @@ class NseUtils:
             print("Error fetching Corporate Action Data. Check your input")
             return None
 
-    def most_active_equity_stocks_by_value(self):
+    def most_active_equity_etf(self, index_str: str):
+        if index_str not in ['volume', 'value']:
+            raise ValueError("Invalid index_str. Use 'volume' or 'value'.")
         try:
             ref_url = 'https://www.nseindia.com/market-data/most-active-equities'
             ref = requests.get(ref_url, headers=self.headers)
-            url = 'https://www.nseindia.com/api/live-analysis-most-active-securities?index=value'
+            url = f'https://www.nseindia.com/api/live-analysis-most-active-etf?index={index_str}'
             response = self.session.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
 
-            data = response.json()  # Convert response to JSON
+            data = response.json()['data']  # Convert response to JSON
+
+            # ✅ Only extract specific keys from each dictionary
+            keys_to_extract = ['symbol', 'open', 'dayHigh', 'dayLow', 'lastPrice', 'nav', 'previousClose', 'pChange', 'totalTradedVolume', 'totalTradedValue']
+            filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in data]
 
             # Convert JSON data to a DataFrame
-            df = pd.DataFrame(data['data'])  # Extract the main data list
+            df = pd.DataFrame(filtered_data)  # Extract the main data list
 
             if df.empty:
                 return None
@@ -1061,8 +1109,7 @@ class NseUtils:
             print("Error fetching Corporate Action Data. Check your input")
             return None
 
-
-    def get_insider_trading(self, from_date: str = None, to_date: str = None):
+    def get_insider_trading(self, from_date: str | None = None, to_date: str | None= None):
 
         try:
 
@@ -1102,12 +1149,13 @@ class NseUtils:
             df = pd.DataFrame(data)
             events = df[df['purpose'].str.contains('Results', case=False, na=False)]
             return events
-        except:
+        except Exception as e:
             print("Error fetching Corporate Action Data. Check your input")
             return None
 
     def get_etf_list(self):
 
+        
         try:
             ref_url = 'https://www.nseindia.com/market-data/exchange-traded-funds-etf'
             ref = requests.get(ref_url, headers=self.headers)
