@@ -5,9 +5,8 @@ nse = NseUtility.NseUtils()
 
 st.write("### Most Active Equities")
 
-# Create a tab bar
-
 tab1, tab2, tab3, tab4 = st.tabs(["Stocks by Volume", "Stocks by Value", "ETF's by Volume", "ETF's by Value"], width="stretch")
+
 with tab1:
     try:
         st.dataframe(nse.most_active_equity_stocks('volume'),height=600, column_config={

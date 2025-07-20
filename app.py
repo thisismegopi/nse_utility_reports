@@ -13,8 +13,7 @@ pg = st.navigation([
     st.Page("./pages/corporate_action.py", title="Corporate Actions", icon="📈"),
     st.Page("./pages/corporate_announcement.py", title="Corporate Announcements", icon="📈"),
     st.Page("./pages/upcoming_results_calendar.py", title="Upcoming Results", icon="📈"),
-    st.Page("./pages/clearing_holidays.py", title="NSE Clearing Holidays", icon="📈"),
-    st.Page("./pages/trading_holidays.py", title="NSE Trading Holidays", icon="📈"),
+    st.Page("./pages/holidays.py", title="Holidays", icon="📈"),
     st.Page("./pages/etf.py", title="ETF's", icon="📈"),
     st.Page("./pages/mutual_funds.py", title="Mutual Funds", icon="💵"),
 ])
