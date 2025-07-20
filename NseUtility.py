@@ -1193,3 +1193,20 @@ class NseUtils:
             print(e)
             print("Error fetching Large Deals Data. Check your input")
             return None
+        
+    #  accepted two arguments, one is self and the other is string 'gainers' or 'loosers'
+    def get_gainers_losers_v2(self, index: str):
+        
+        if index not in ['gainers', 'loosers']:
+            raise ValueError("Invalid data type. Use 'BLOCK_DEALS_DATA' or 'LARGE_DEALS_DATA'.")
+        try:
+            ref_url = 'https://www.nseindia.com/market-data/top-gainers-losers'
+            ref = requests.get(ref_url, headers=self.headers)
+            url = f'https://www.nseindia.com/api/live-analysis-variations?index={index}'
+            response = self.session.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
+            data = response.json()  # Convert response to JSON
+            return data
+        except Exception as e:
+            print(e)
+            print("Error fetching Large Deals Data. Check your input")
+            return None

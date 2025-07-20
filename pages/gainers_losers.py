@@ -1,31 +1,78 @@
 import streamlit as st
+import pandas as pd
 import NseUtility
 
 nse = NseUtility.NseUtils()
 
 st.write("### Gainers & Losers")
-try:
-    gl = nse.get_gainers_losers()
-    col1, col2, col3, col4, col5, col6, col7, col8, col9, col10 = st.columns(10)
-    with col1:
-        st.dataframe({"Nifty Gainer":gl[0]['Nifty Gainer']})
-    with col2:
-        st.dataframe({"Nifty Loser":gl[1]['Nifty Loser']})
-    with col3:
-        st.dataframe({"Nifty Next 50 Gainer":gl[0]['Nifty Next 50 Gainer']})
-    with col4:
-        st.dataframe({"Nifty Next 50 Loser":gl[1]['Nifty Next 50 Loser']})
-    with col5:
-        st.dataframe({"Bank Nifty Gainer":gl[0]['Bank Nifty Gainer']})
-    with col6:
-        st.dataframe({"Bank Nifty Loser":gl[1]['Bank Nifty Loser']})
-    with col7:
-        st.dataframe({"All Securities Gainer":gl[0]['All Securities Gainer']})
-    with col8:
-        st.dataframe({"All Securities Loser":gl[1]['All Securities Loser']})
-    with col9:
-        st.dataframe({"FNO Gainer":gl[0]['FNO Gainer']})
-    with col10:
-        st.dataframe({"FNO Gainer":gl[1]['FNO Loser']})
-except Exception as e:
-    st.error(e)
+
+selectBox = st.selectbox('Select Index', options={
+    'NIFTY 50':'NIFTY',
+    'BANK NIFTY':'BANKNIFTY',
+    'NIFTY NEXT 50':'NIFTYNEXT50',
+    'F&O Securities':'FOSec',
+    'All Securities':'allSec',
+})
+
+index = {
+    'NIFTY 50':'NIFTY',
+    'BANK NIFTY':'BANKNIFTY',
+    'NIFTY NEXT 50':'NIFTYNEXT50',
+    'F&O Securities':'FOSec',
+    'All Securities':'allSec',
+}
+
+tab1, tab2 = st.tabs(["Gainers", "Losers"])
+
+with tab1:
+    try:
+        gainers = nse.get_gainers_losers_v2('gainers')
+        if gainers is None:
+            raise Exception("No data available for gainers.")
+        else:
+            # ✅ Only extract specific keys from each dictionary
+            keys_to_extract = ['symbol', 'open_price','high_price', 'low_price', 'ltp', 'prev_price', 'perChange', 'trade_quantity', 'turnover']
+            filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in gainers[index[selectBox]]['data']]
+            df = pd.DataFrame(filtered_data)
+            if df.empty:
+                raise Exception("No data available for gainers.")
+            else:
+                st.dataframe(df, height=600, column_config={
+                    "symbol": st.column_config.TextColumn("Symbol"),
+                    "open_price": st.column_config.NumberColumn("Open Price", format="%0.2f"),
+                    "high_price": st.column_config.NumberColumn("High Price", format="%0.2f"),
+                    "low_price": st.column_config.NumberColumn("Low Price", format="%0.2f"),
+                    "ltp": st.column_config.NumberColumn("LTP", format="%0.2f"),
+                    "prev_price": st.column_config.NumberColumn("Previous Price", format="%0.2f"),
+                    "perChange": st.column_config.NumberColumn("% Change", format="%0.2f%%"),
+                    "trade_quantity": st.column_config.NumberColumn("Volume"),
+                    "turnover": st.column_config.NumberColumn("Value"),
+                })
+    except Exception as e:
+        st.error(f"Error fetching gainers: {e}")
+with tab2:
+    try:
+        loosers = nse.get_gainers_losers_v2('loosers')
+        if loosers is None:
+            raise Exception("No data available for loosers.")
+        else:
+            # ✅ Only extract specific keys from each dictionary
+            keys_to_extract = ['symbol', 'open_price','high_price', 'low_price', 'ltp', 'prev_price', 'perChange', 'trade_quantity', 'turnover']
+            filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in loosers[index[selectBox]]['data']]
+            df = pd.DataFrame(filtered_data)
+            if df.empty:
+                raise Exception("No data available for loosers.")
+            else:
+                st.dataframe(df, height=600, column_config={
+                    "symbol": st.column_config.TextColumn("Symbol"),
+                    "open_price": st.column_config.NumberColumn("Open Price", format="%0.2f"),
+                    "high_price": st.column_config.NumberColumn("High Price", format="%0.2f"),
+                    "low_price": st.column_config.NumberColumn("Low Price", format="%0.2f"),
+                    "ltp": st.column_config.NumberColumn("LTP", format="%0.2f"),
+                    "prev_price": st.column_config.NumberColumn("Previous Price", format="%0.2f"),
+                    "perChange": st.column_config.NumberColumn("% Change", format="%0.2f%%"),
+                    "trade_quantity": st.column_config.NumberColumn("Volume"),
+                    "turnover": st.column_config.NumberColumn("Value"),
+                })
+    except Exception as e:
+        st.error(f"Error fetching loosers: {e}")
