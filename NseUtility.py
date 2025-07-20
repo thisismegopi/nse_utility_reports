@@ -1172,3 +1172,24 @@ class NseUtils:
         except Exception as e:
             print("Error fetching ETF list. Check your input")
             return None
+    
+    def large_deals(self, deal_str: str = 'BLOCK_DEALS_DATA'):
+        if deal_str not in ['BLOCK_DEALS_DATA', 'BULK_DEALS_DATA', 'SHORT_DEALS_DATA']:
+            raise ValueError("Invalid data type. Use 'BLOCK_DEALS_DATA' or 'LARGE_DEALS_DATA'.")
+        try:
+            ref_url = 'https://www.nseindia.com/market-data/large-deals'
+            ref = requests.get(ref_url, headers=self.headers)
+            url = 'https://www.nseindia.com/api/snapshot-capital-market-largedeal'
+            response = self.session.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
+            data = response.json()  # Convert response to JSON
+
+            df = pd.DataFrame(data[deal_str])  # Extract the main data list
+
+            if df.empty:
+                return None
+            else:
+                return df
+        except Exception as e:
+            print(e)
+            print("Error fetching Large Deals Data. Check your input")
+            return None
