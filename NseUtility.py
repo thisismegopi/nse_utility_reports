@@ -740,16 +740,16 @@ class NseUtils:
             to_date_str = datetime.now().strftime("%d-%m-%Y")
         if to_date_str is None:
             to_date_str = datetime.now().strftime("%d-%m-%Y")
-
+        print(from_date_str, to_date_str)
         try:
             ref_url = 'https://www.nseindia.com/companies-listing/corporate-filings-actions'
             ref = requests.get(ref_url, headers=self.headers)
 
             if symbol is not None:
-                url = f"https://www.nseindia.com/api/corporates-corporateActions?index=equities&symbol={symbol}"
+                url = f"https://www.nseindia.com/api/corporates-corporateActions?index=equities&symbol={symbol}&from_date={from_date_str}&to_date={to_date_str}"
             else:
-                url = f"https://www.nseindia.com/api/corporates-corporateActions?index=equities"
-
+                url = f"https://www.nseindia.com/api/corporates-corporateActions?index=equities&from_date={from_date_str}&to_date={to_date_str}"
+            print(url)
             data_obj = self.session.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
             all_data = data_obj.json()
 
@@ -758,6 +758,9 @@ class NseUtils:
             filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in all_data]
 
             corp_action = pd.DataFrame(filtered_data)
+
+            if corp_action.empty:
+                return None
 
             if filter is not None:
                 corp_action = corp_action[corp_action['purpose'].str.contains(filter, case=False, na=False)]

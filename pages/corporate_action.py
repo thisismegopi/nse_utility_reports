@@ -1,12 +1,24 @@
 import streamlit as st
 import NseUtility
+from datetime import datetime, timedelta
 
 nse = NseUtility.NseUtils()
 
 st.write("### Corporate Actions")
-symbol = st.text_input("Search", key="symbol", placeholder="Enter a symbol to search")
+col1, col2, col3 = st.columns(3)
+with col1:
+    symbol = st.text_input("Search", key="symbol", placeholder="Enter a symbol to search")
+with col2:
+    from_date = st.date_input("From Date", value=datetime.now(), key="from_date",)
+with col3:
+    to_date = st.date_input("To Date", value=datetime.now(), key="to_date")
+
 try:
-    st.dataframe(nse.get_corporate_action(symbol=symbol),height=600,column_config={
+    data = nse.get_corporate_action(symbol=symbol, from_date_str=from_date.strftime("%d-%m-%Y"), to_date_str=to_date.strftime("%d-%m-%Y"))
+    if data is None:
+        st.warning("No corporate actions found for the given symbol.")
+        st.stop()
+    st.dataframe(data,height=600,column_config={
         "symbol": st.column_config.TextColumn("Symbol"),
         "series": st.column_config.TextColumn("Series"),
         "faceVal": st.column_config.TextColumn("Face Value"),
