@@ -79,9 +79,11 @@ class NseUtils:
         ref = requests.get(ref_url, headers=self.headers)
         url = f"https://www.nseindia.com/api/equity-stockIndices?index={category}"
         data = requests.get(url, headers=self.headers, cookies=ref.cookies.get_dict()).json()
-        df = pd.DataFrame(data['data'])
-        df = df.drop(["meta"], axis=1)
-        df = df.set_index("symbol", drop=True)
+
+        # ✅ Only extract specific keys from each dictionary
+        keys_to_extract = ['symbol', 'priority','open', 'dayHigh', 'dayLow', 'lastPrice', 'previousClose', 'change', 'pChange', 'ffmc', 'yearHigh', 'yearLow', 'totalTradedVolume', 'totalTradedValue', 'perChange30d', 'perChange365d']
+        filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in data['data']]
+        df = pd.DataFrame(filtered_data)
         if list_only:
             symbol_list = sorted(df.index[1:].tolist())
             return symbol_list
