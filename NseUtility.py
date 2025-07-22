@@ -740,7 +740,6 @@ class NseUtils:
             to_date_str = datetime.now().strftime("%d-%m-%Y")
         if to_date_str is None:
             to_date_str = datetime.now().strftime("%d-%m-%Y")
-        print(from_date_str, to_date_str)
         try:
             ref_url = 'https://www.nseindia.com/companies-listing/corporate-filings-actions'
             ref = requests.get(ref_url, headers=self.headers)
@@ -749,7 +748,6 @@ class NseUtils:
                 url = f"https://www.nseindia.com/api/corporates-corporateActions?index=equities&symbol={symbol}&from_date={from_date_str}&to_date={to_date_str}"
             else:
                 url = f"https://www.nseindia.com/api/corporates-corporateActions?index=equities&from_date={from_date_str}&to_date={to_date_str}"
-            print(url)
             data_obj = self.session.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
             all_data = data_obj.json()
 
@@ -1140,17 +1138,29 @@ class NseUtils:
             print("Error fetching Corporate Action Data. Check your input")
             return None
 
-    def get_upcoming_results_calendar(self):
+    def get_upcoming_results_calendar(self, symbol: str | None = None, from_date_str: str | None = None, to_date_str: str | None = None):
+
+        if from_date_str is None:
+            from_date  = datetime.now() - timedelta(days=30)
+            from_date_str = from_date.strftime("%d-%m-%Y")
+            to_date_str = datetime.now().strftime("%d-%m-%Y")
+        if to_date_str is None:
+            to_date_str = datetime.now().strftime("%d-%m-%Y")
 
         # Extracts the events calendar from NSE - Filters only the upcoming Financial results related events
         try:
             ref_url = 'https://www.nseindia.com/companies-listing/corporate-filings-event-calendar'
             ref = requests.get(ref_url, headers=self.headers)
-            url= f'https://www.nseindia.com/api/event-calendar?'
+            if symbol is not None:
+                url = f"https://www.nseindia.com/api/event-calendar?index=equities&symbol={symbol}&from_date={from_date_str}&to_date={to_date_str}"
+            else:
+                url = f"https://www.nseindia.com/api/event-calendar?index=equities&from_date={from_date_str}&to_date={to_date_str}"
             response = requests.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
             data = response.json()
             df = pd.DataFrame(data)
             events = df[df['purpose'].str.contains('Results', case=False, na=False)]
+            if events.empty:
+                return None
             return events
         except Exception as e:
             print("Error fetching Corporate Action Data. Check your input")

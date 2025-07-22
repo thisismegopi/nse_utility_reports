@@ -1,12 +1,20 @@
 import streamlit as st
 import NseUtility
+from datetime import datetime, timedelta
 
 nse = NseUtility.NseUtils()
 
-st.write("### Upcoming Results Calendar")
-# symbol = st.text_input("Search", key="symbol", placeholder="Enter a symbol to search")
+st.write("### Upcoming Results")
+col1, col2, col3 = st.columns(3)
+with col1:
+    symbol = st.text_input("Search", key="symbol", placeholder="Enter a symbol to search")
+with col2:
+    from_date = st.date_input("From Date", value=datetime.now(), key="from_date",)
+with col3:
+    to_date = st.date_input("To Date", value=datetime.now() + timedelta(days=30), key="to_date")
+
 try:
-    df = nse.get_upcoming_results_calendar()
+    df = nse.get_upcoming_results_calendar(symbol=symbol, from_date_str=from_date.strftime("%d-%m-%Y"), to_date_str=to_date.strftime("%d-%m-%Y"))
     if df is None or df.empty:
         st.warning("No upcoming results found.")
     else:
