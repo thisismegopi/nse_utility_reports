@@ -1168,7 +1168,7 @@ class NseUtils:
             print("Error fetching Corporate Action Data. Check your input")
             return None
 
-    def get_etf_list(self):
+    def get_etf_list(self, search_text: str | None = None):
 
         
         try:
@@ -1180,10 +1180,17 @@ class NseUtils:
             # Convert JSON data to a DataFrame
             df = pd.DataFrame(data['data'])  # Extract the main data list
 
-            if df.empty:
-                return None
+            if search_text is not None:
+                df = df[df['assets'].str.contains(search_text, case=False, na=False)]
+                if df.empty:
+                    return None
+                else:
+                    return df
             else:
-                return df
+                if df.empty:
+                    return None
+                else:
+                    return df
         except Exception as e:
             print("Error fetching ETF list. Check your input")
             return None
