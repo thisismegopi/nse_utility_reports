@@ -68,9 +68,13 @@ class NseUtils:
         data = response.json()['data']
         for i in data:
             processed_data.append(i["metadata"])
-        df = pd.DataFrame(processed_data)
-        df = df.set_index("symbol", drop=True)
-        return df
+
+        # ✅ Only extract specific keys from each dictionary
+        keys_to_extract = ['symbol', 'previousClose','iep', 'change', 'pChange', 'lastPrice', 'finalQuantity', 'totalTurnover', 'marketCap', 'yearHigh', 'yearLow', 'chartTodayPath']
+        filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in processed_data]
+        df = pd.DataFrame(filtered_data)
+        advance_decline = {"advance":response.json()['advances'], "decline":response.json()['declines'], "unchanged":response.json()['unchanged']}
+        return {"data_frame":df, "advance_decline": advance_decline}
 
     def get_index_details(self, category, list_only=False):
         category = category.upper().replace('&', '%26').replace(' ', '%20')
@@ -1160,7 +1164,7 @@ class NseUtils:
             response = requests.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
             data = response.json()
             df = pd.DataFrame(data)
-            events = df[df['purpose'].str.contains('Results', case=False, na=False)]
+            events = df[df['bm_desc'].str.contains('Results', case=False, na=False)]
             if events.empty:
                 return None
             return events
