@@ -16,7 +16,7 @@ with col3:
 try:
     data = nse.get_corporate_action(symbol=symbol, from_date_str=from_date.strftime("%d-%m-%Y"), to_date_str=to_date.strftime("%d-%m-%Y"))
     if data is None:
-        st.warning("No corporate actions found for the given symbol.")
+        st.warning("No corporate actions found for the given criteria.")
         st.stop()
     st.dataframe(data,height=600,column_config={
         "symbol": st.column_config.TextColumn("Symbol"),

@@ -49,7 +49,7 @@ with tab1:
                     "turnover": st.column_config.NumberColumn("Value"),
                 })
     except Exception as e:
-        st.error(f"Error fetching gainers: {e}")
+        st.error(e)
 with tab2:
     try:
         loosers = nse.get_gainers_losers_v2('loosers')

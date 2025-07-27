@@ -76,7 +76,7 @@ class NseUtils:
         advance_decline = {"advance":response.json()['advances'], "decline":response.json()['declines'], "unchanged":response.json()['unchanged']}
         return {"data_frame":df, "advance_decline": advance_decline}
 
-    def get_index_details(self, category, list_only=False):
+    def get_index_details(self, category):
         category = category.upper().replace('&', '%26').replace(' ', '%20')
 
         ref_url = "https://www.nseindia.com/market-data/live-equity-market?symbol={category}"
@@ -88,11 +88,7 @@ class NseUtils:
         keys_to_extract = ['symbol', 'priority','open', 'dayHigh', 'dayLow', 'lastPrice', 'previousClose', 'change', 'pChange', 'ffmc', 'yearHigh', 'yearLow', 'totalTradedVolume', 'totalTradedValue', 'perChange30d', 'perChange365d']
         filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in data['data']]
         df = pd.DataFrame(filtered_data)
-        if list_only:
-            symbol_list = sorted(df.index[1:].tolist())
-            return symbol_list
-        else:
-            return df
+        return df
 
     def clearing_holidays(self, list_only=False):
         """
@@ -776,7 +772,7 @@ class NseUtils:
             print("Details:", e)
             return None
 
-    def get_corporate_announcement(self, from_date_str: str | None = None, to_date_str: str | None = None):
+    def get_corporate_announcement(self, from_date_str: str | None = None, to_date_str: str | None = None, symbol: str | None = None):
 
         # Fetch Corporate Announcements data from NSE
         if from_date_str is None:
@@ -789,7 +785,7 @@ class NseUtils:
         try:
             ref_url = ('https://www.nseindia.com/companies-listing/corporate-filings-announcements')
             ref = requests.get(ref_url, headers=self.headers)
-            url = f'https://www.nseindia.com/api/corporate-announcements?index=equities&from_date={from_date_str}&to_date={to_date_str}'
+            url = f'https://www.nseindia.com/api/corporate-announcements?index=equities&from_date={from_date_str}&to_date={to_date_str}{"&symbol=" + symbol if symbol is not None else ""}'
             data_obj = self.session.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
 
             # ✅ Only extract specific keys from each dictionary
