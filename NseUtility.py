@@ -1,9 +1,9 @@
 """
     * NSE UTILITY *
 
-    Description: This utility is Python Library to get publicly available data on new NSE india website
+    Description: This Tool is Python Library to get publicly available data on new NSE india website
 
-    Disclaimer : This utility is meant for educational purposes only. Downloading data from NSE
+    Disclaimer : This Tool is meant for educational purposes only. Downloading data from NSE
     website requires explicit approval from the exchange. Hence, the usage of this utility is for
     limited purposes only under proper/explicit approvals.
 
@@ -1177,8 +1177,13 @@ class NseUtils:
             url = 'https://www.nseindia.com/api/etf'
             response = self.session.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
             data = response.json()  # Convert response to JSON
+
+            # ✅ Only extract specific keys from each dictionary
+            keys_to_extract = ['symbol', 'assets', 'open', 'high', 'low', 'ltP', 'chn', 'per', 'qty', 'trdVal', 'nav', 'wkhi', 'wklo', 'perChange30d', 'perChange365d']
+            filtered_data = [{k: d.get(k) for k in keys_to_extract} for d in data['data']]
+
             # Convert JSON data to a DataFrame
-            df = pd.DataFrame(data['data'])  # Extract the main data list
+            df = pd.DataFrame(filtered_data)  # Extract the main data list
 
             if search_text is not None:
                 df = df[df['assets'].str.contains(search_text, case=False, na=False)]

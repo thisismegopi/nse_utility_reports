@@ -2,6 +2,7 @@ import streamlit as st
 
 st.set_page_config(layout="wide")
 pg = st.navigation([
+    st.Page("./pages/index.py", title="Home", icon="🏠"),
     st.Page("./pages/index_details.py", title="Index Details", icon="🗒️"),
     st.Page("./pages/pre_market_info.py", title="Pre Market Info", icon="📈"),
     st.Page("./pages/fii_dii_data.py", title="FII & DII Data", icon="📅"),

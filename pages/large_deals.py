@@ -17,7 +17,9 @@ with tab1:
         "buySell": st.column_config.TextColumn("BUY/SELL"),
         "qty": st.column_config.NumberColumn("Quantity Traded"),
         "watp": st.column_config.NumberColumn("Trade Price/ Weighted. AVG. Pprice"),
-    })
+        })
+        st.warning("⚠️Disclaimer : This Tool is meant for educational purposes only. Downloading data from NSE website requires explicit approval from the exchange. Hence, the usage of this utility is for limited purposes only under proper/explicit approvals.")
+        st.write("Please give a ⭐️ on [GitHub](https://github.com/thisismegopi/nse_utility_reports). Made with ❤️ by [Gopi](https://github.com/thisismegopi).")
     except:
         st.warning("Unable to fetch data. Please try again later.")
 with tab2:
@@ -30,7 +32,9 @@ with tab2:
         "buySell": st.column_config.TextColumn("BUY/SELL"),
         "qty": st.column_config.NumberColumn("Quantity Traded"),
         "watp": st.column_config.NumberColumn("Trade Price/ Weighted. AVG. Pprice"),
-    })
+        })
+        st.warning("⚠️Disclaimer : This Tool is meant for educational purposes only. Downloading data from NSE website requires explicit approval from the exchange. Hence, the usage of this utility is for limited purposes only under proper/explicit approvals.")
+        st.write("Please give a ⭐️ on [GitHub](https://github.com/thisismegopi/nse_utility_reports). Made with ❤️ by [Gopi](https://github.com/thisismegopi).")
     except:
         st.warning("Unable to fetch data. Please try again later.")
 with tab3:
@@ -43,6 +47,8 @@ with tab3:
         "buySell": st.column_config.TextColumn("BUY/SELL"),
         "qty": st.column_config.NumberColumn("Quantity Traded"),
         "watp": st.column_config.NumberColumn("Trade Price/ Weighted. AVG. Pprice"),
-    })
+        })
+        st.warning("⚠️Disclaimer : This Tool is meant for educational purposes only. Downloading data from NSE website requires explicit approval from the exchange. Hence, the usage of this utility is for limited purposes only under proper/explicit approvals.")
+        st.write("Please give a ⭐️ on [GitHub](https://github.com/thisismegopi/nse_utility_reports). Made with ❤️ by [Gopi](https://github.com/thisismegopi).")
     except:
         st.warning("Unable to fetch data. Please try again later.")

@@ -1,3 +1,2 @@
-psycopg2-binary==2.9.10
-sqlalchemy==2.0.41
 streamlit==1.47.0
+pandas==2.3.1

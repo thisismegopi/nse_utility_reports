@@ -24,5 +24,7 @@ try:
         "attchmntText": st.column_config.TextColumn("Details"),
         "exchdisstime": st.column_config.DatetimeColumn("Date and Time"),
     })
+    st.warning("⚠️Disclaimer : This Tool is meant for educational purposes only. Downloading data from NSE website requires explicit approval from the exchange. Hence, the usage of this utility is for limited purposes only under proper/explicit approvals.")
+    st.write("Please give a ⭐️ on [GitHub](https://github.com/thisismegopi/nse_utility_reports). Made with ❤️ by [Gopi](https://github.com/thisismegopi).")
 except Exception as e:
     st.warning("Failed: " + str(e))

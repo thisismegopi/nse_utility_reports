@@ -16,7 +16,9 @@ with tab1:
         "morning_session": st.column_config.TextColumn("Morning Session"),
         "evening_session": st.column_config.TextColumn("Evening Session"),
         "Sr_no": st.column_config.TextColumn("#"),
-    })
+        })
+        st.warning("⚠️Disclaimer : This Tool is meant for educational purposes only. Downloading data from NSE website requires explicit approval from the exchange. Hence, the usage of this utility is for limited purposes only under proper/explicit approvals.")
+        st.write("Please give a ⭐️ on [GitHub](https://github.com/thisismegopi/nse_utility_reports). Made with ❤️ by [Gopi](https://github.com/thisismegopi).")
     except:
         st.warning("Unable to fetch data. Please try again later.")
 with tab2:
@@ -28,6 +30,8 @@ with tab2:
         "morning_session": st.column_config.TextColumn("Morning Session"),
         "evening_session": st.column_config.TextColumn("Evening Session"),
         "Sr_no": st.column_config.TextColumn("#"),
-    })
+        })
+        st.warning("⚠️Disclaimer : This Tool is meant for educational purposes only. Downloading data from NSE website requires explicit approval from the exchange. Hence, the usage of this utility is for limited purposes only under proper/explicit approvals.")
+        st.write("Please give a ⭐️ on [GitHub](https://github.com/thisismegopi/nse_utility_reports). Made with ❤️ by [Gopi](https://github.com/thisismegopi).")
     except:
         st.warning("Unable to fetch data. Please try again later.")

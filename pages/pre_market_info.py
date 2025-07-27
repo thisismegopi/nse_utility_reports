@@ -5,7 +5,16 @@ def color_negative_red(value):
     """
     Colors the text red if the value is negative based on theme.
     """
-    return ['background-color: #00ff0020',]*len(value) if value['change'] > 0 else ['background-color: #ff000020']*len(value)
+    try:
+        per_value = float(value['change'])
+    except (ValueError, TypeError, KeyError):
+        # Handle cases where 'per' is missing or not a number
+        return [''] * len(value)
+
+    if per_value > 0:
+        return ['background-color: #00ff0020'] * len(value)
+    else:
+        return ['background-color: #ff000020'] * len(value)
 
 def main():
     nse = NseUtility.NseUtils()

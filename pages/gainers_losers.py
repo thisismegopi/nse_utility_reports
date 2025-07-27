@@ -48,6 +48,8 @@ with tab1:
                     "trade_quantity": st.column_config.NumberColumn("Volume"),
                     "turnover": st.column_config.NumberColumn("Value"),
                 })
+                st.warning("⚠️Disclaimer : This Tool is meant for educational purposes only. Downloading data from NSE website requires explicit approval from the exchange. Hence, the usage of this utility is for limited purposes only under proper/explicit approvals.")
+                st.write("Please give a ⭐️ on [GitHub](https://github.com/thisismegopi/nse_utility_reports). Made with ❤️ by [Gopi](https://github.com/thisismegopi).")
     except Exception as e:
         st.error(e)
 with tab2:
@@ -74,5 +76,7 @@ with tab2:
                     "trade_quantity": st.column_config.NumberColumn("Volume"),
                     "turnover": st.column_config.NumberColumn("Value"),
                 })
+                st.warning("⚠️Disclaimer : This Tool is meant for educational purposes only. Downloading data from NSE website requires explicit approval from the exchange. Hence, the usage of this utility is for limited purposes only under proper/explicit approvals.")
+                st.write("Please give a ⭐️ on [GitHub](https://github.com/thisismegopi/nse_utility_reports). Made with ❤️ by [Gopi](https://github.com/thisismegopi).")
     except Exception as e:
         st.error(f"Error fetching loosers: {e}")
