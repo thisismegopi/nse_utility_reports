@@ -1,5 +1,5 @@
 import streamlit as st
-import NseUtility
+import utils.NseUtility as NseUtility
 from datetime import datetime, timedelta
 
 nse = NseUtility.NseUtils()

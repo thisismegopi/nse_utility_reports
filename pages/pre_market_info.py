@@ -1,5 +1,5 @@
 import streamlit as st
-import NseUtility
+import utils.NseUtility as NseUtility
 
 def color_negative_red(value):
     """

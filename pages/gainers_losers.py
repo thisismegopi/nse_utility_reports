@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import NseUtility
+import utils.NseUtility as NseUtility
 
 nse = NseUtility.NseUtils()
 
