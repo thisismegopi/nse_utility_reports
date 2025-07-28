@@ -97,7 +97,7 @@ class NseUtils:
         full details are provided in a dataframe
         :return:
         """
-        response = self.session.get(f'https://www.nseindia.com/api/holiday-master?type={'Clearing'.lower()}',
+        response = self.session.get(f'https://www.nseindia.com/api/holiday-master?type={ "Clearing".lower() }',
                                 headers=self.headers).json()
         data = list(response.values())[0]
 
@@ -120,7 +120,7 @@ class NseUtils:
         full details are provided in a dataframe
         :return:
         """
-        response = self.session.get(f'https://www.nseindia.com/api/holiday-master?type={'Trading'.lower()}',
+        response = self.session.get(f'https://www.nseindia.com/api/holiday-master?type={ "Trading".lower() }',
                                 headers=self.headers).json()
         data = list(response.values())[0]
 

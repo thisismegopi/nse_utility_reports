@@ -1,6 +1,6 @@
 # NSE Utility Reports
 
-#### This tool is to get publicly available data on NSE india website
+This tool is to get publicly available data on NSE india website
 
 > ⚠️**Disclaimer** : This Tool is meant for educational purposes only. Downloading data from NSE website requires explicit approval from the exchange. Hence, the usage of this utility is for limited purposes only under proper/explicit approvals.
 
@@ -21,24 +21,30 @@
 -   🪂Holidays
 -   💶ETF's Data
 
-### Requirements
+## 📋 Prerequisites
 
-```
-1. python 3.8 and above
-2. pandas
-3. streamlit
-```
+-   [UV](https://docs.astral.sh/uv/getting-started/installation/) Python package and project manager
+-   Python 3.10 or higher
 
-### How to Run
+## 🛠️ Installation
 
-```sh
-pip install -r requirements.txt
-```
+1. **Clone this repository:**
 
-```sh
-streamlit run app.py
-# or
-python -m streamlit run app.py
+    ```bash
+    $ git clone https://github.com/thisismegopi/nse_utility_reports.git
+    $ cd nse_utility_reports
+    ```
+
+2. **Install dependencies using uv:**
+
+    ```bash
+    $ uv sync
+    ```
+
+## 🎮 Usage
+
+```bash
+$ uv run streamlit run main.py
 ```
 
 Please give a ⭐️ on [GitHub](https://github.com/thisismegopi/nse_utility_reports). Made with ❤️ by [Gopi](https://github.com/thisismegopi).
