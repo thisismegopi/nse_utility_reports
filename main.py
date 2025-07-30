@@ -16,6 +16,7 @@ def main():
         st.Page("./pages/corporate_action.py", title="Corporate Actions", icon="🎬"),
         st.Page("./pages/corporate_announcement.py", title="Corporate Announcements", icon="📻"),
         st.Page("./pages/upcoming_results_calendar.py", title="Upcoming Results", icon="🗓️"),
+        st.Page("./pages/corporate_filings_insider_trading.py", title="Insider Trading", icon="🗓️"),
         st.Page("./pages/holidays.py", title="Holidays", icon="🪂"),
         st.Page("./pages/etf.py", title="ETF's", icon="💶"),
         # st.Page("./pages/mutual_funds.py", title="Mutual Funds", icon="💵"),

@@ -1237,3 +1237,20 @@ class NseUtils:
             print(e)
             print("Error fetching Large Deals Data. Check your input")
             return None
+        
+    def get_corporate_filings_insider_trading(self):
+        
+        try:
+            ref_url = 'https://www.nseindia.com/companies-listing/corporate-filings-insider-trading'
+            ref = requests.get(ref_url, headers=self.headers)
+            url = f'https://www.nseindia.com/api/corporates-pit'
+            response = self.session.get(url, headers=self.headers, cookies=ref.cookies.get_dict())
+            data = response.json()  # Convert response to JSON
+            df = pd.DataFrame(data['data'])
+            if df.empty:
+                return None
+            return df
+        except Exception as e:
+            print(e)
+            print("Error fetching Large Deals Data. Check your input")
+            return None

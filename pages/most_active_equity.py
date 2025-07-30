@@ -8,7 +8,7 @@ def color_negative_red(value):
     Colors the text red if the value is negative based on theme.
     """
     try:
-        per_value = float(value['change'])
+        per_value = float(value['pChange'])
     except (ValueError, TypeError, KeyError):
         # Handle cases where 'per' is missing or not a number
         return [''] * len(value)
