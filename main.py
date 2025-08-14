@@ -9,6 +9,11 @@ def main():
             st.Page("./pages/index_details.py", title="Index Details", icon="🗒️"),
             st.Page("./pages/pre_market_info.py", title="Pre Market Info", icon="📈"),
             st.Page("./pages/fii_dii_data.py", title="FII & DII Data", icon="📅"),
+            st.Page(
+                "./pages/long_short_ratio.py",
+                title="F&O - Participant wise Open Interest",
+                icon="✏️",
+            ),
             st.Page("./pages/advance_decline.py", title="Advances/Declines", icon="📈"),
             st.Page(
                 "./pages/gainers_losers.py", title="Top 20 Gainers/ Losers", icon="📉"
