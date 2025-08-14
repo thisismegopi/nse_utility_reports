@@ -5,7 +5,7 @@ st.write("# Participants Long/Short Ratio")
 st.write(
     "Download the CSV file from [F&O - Participant wise Open Interest(csv)](https://www.nseindia.com/all-reports-derivatives) and upload it here."
 )
-csv = st.file_uploader("Upload a CSV file", type=["csv"])
+csv = st.file_uploader("Upload a CSV file", type=["csv"], accept_multiple_files=False)
 
 
 def calculate_ratio(long, short):
