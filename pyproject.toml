@@ -5,6 +5,8 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "matplotlib>=3.10.5",
+    "mftool>=2.9",
     "pandas>=2.3.1",
     "streamlit>=1.47.0",
 ]

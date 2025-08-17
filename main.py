@@ -48,7 +48,7 @@ def main():
             ),
             st.Page("./pages/holidays.py", title="Holidays", icon="🪂"),
             st.Page("./pages/etf.py", title="ETF's", icon="💶"),
-            # st.Page("./pages/mutual_funds.py", title="Mutual Funds", icon="💵"),
+            st.Page("./pages/mutual_fund.py", title="Mutual Funds", icon="💵"),
         ]
     )
     pg.run()
