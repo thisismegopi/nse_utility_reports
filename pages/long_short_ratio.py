@@ -1,11 +1,14 @@
 import streamlit as st
 import pandas as pd
+from io import StringIO
+import requests
 
 st.write("# Participants Long/Short Ratio")
-st.write(
-    "Download the CSV file from [F&O - Participant wise Open Interest(csv)](https://www.nseindia.com/all-reports-derivatives) and upload it here."
-)
-csv = st.file_uploader("Upload a CSV file", type=["csv"], accept_multiple_files=False)
+date = st.date_input("Date", value=None)
+
+if date is not None:
+    url = f"https://archives.nseindia.com/content/nsccl/fao_participant_oi_{date.strftime('%d%m%Y')}.csv"
+    response = requests.get(url)
 
 
 def calculate_ratio(long, short):
@@ -15,8 +18,8 @@ def calculate_ratio(long, short):
     return long_ratio, short_ratio
 
 
-if csv is not None:
-    df = pd.read_csv(csv, header=1)
+if response.status_code == 200:
+    df = pd.read_csv(StringIO(response.text), header=1)
     # st.dataframe(df, use_container_width=True)
     data = df.to_json()
 
