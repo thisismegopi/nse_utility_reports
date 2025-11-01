@@ -44,8 +44,52 @@ This tool is to get publicly available data on NSE india website
 
 ## 🎮 Usage
 
+### Local Development
+
 ```bash
 $ uv run streamlit run main.py
 ```
+
+### Using Docker
+
+#### Option 1: Using Docker Compose (Recommended)
+
+```bash
+# Build and run the application
+$ docker-compose up --build
+
+# Run in detached mode
+$ docker-compose up -d
+
+# Stop the application
+$ docker-compose down
+```
+
+The application will be available at `http://localhost:8501`
+
+#### Option 2: Using Docker directly
+
+```bash
+# Build the Docker image
+$ docker build -t nse-utility-reports .
+
+# Run the container
+$ docker run -p 8501:8501 nse-utility-reports
+
+# Run in detached mode
+$ docker run -d -p 8501:8501 --name nse-reports nse-utility-reports
+
+# Stop the container
+$ docker stop nse-reports
+```
+
+The application will be available at `http://localhost:8501`
+
+## 🐳 Docker Details
+
+-   **Base Image**: Python 3.10-slim
+-   **Port**: 8501
+-   **Package Manager**: uv (faster Python package management)
+-   **Health Check**: Included for monitoring
 
 Please give a ⭐️ on [GitHub](https://github.com/thisismegopi/nse_utility_reports). Made with ❤️ by [Gopi](https://github.com/thisismegopi).
