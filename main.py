@@ -14,6 +14,7 @@ def main():
                 title="F&O - Participant wise Open Interest",
                 icon="✏️",
             ),
+            st.Page("./pages/futures_dashbopard.py", title="Future Market Movers", icon="↕️"),
             st.Page("./pages/advance_decline.py", title="Advances/Declines", icon="📈"),
             st.Page(
                 "./pages/gainers_losers.py", title="Top 20 Gainers/ Losers", icon="📉"

@@ -6,26 +6,27 @@ This tool is to get publicly available data on NSE india website
 
 ##### This Tool provide the following data's:
 
--   🗒️Index Data
--   📈Pre Market Data
--   📅FII and DII Data
--   ✏️F&O - Participant wise Open Interest (Long/Short) ratio
--   📈Advances/Declines
--   📉Top 20 Gainers/ Losers
--   📊Most Active Equities
--   🤝Large Deals
--   💰Index Dividend Yield
--   📈Index PE & PB Ratio
--   🎬Corporate Actions
--   📻Corporate Announcements
--   🗓️Upcoming Results
--   🪂Holidays
--   💶ETF's Data
+- 🗒️Index Data
+- 📈Pre Market Data
+- 📅FII and DII Data
+- ✏️F&O - Participant wise Open Interest (Long/Short) ratio
+- ↕️Future Market Movers
+- 📈Advances/Declines
+- 📉Top 20 Gainers/ Losers
+- 📊Most Active Equities
+- 🤝Large Deals
+- 💰Index Dividend Yield
+- 📈Index PE & PB Ratio
+- 🎬Corporate Actions
+- 📻Corporate Announcements
+- 🗓️Upcoming Results
+- 🪂Holidays
+- 💶ETF's Data
 
 ## 📋 Prerequisites
 
--   [UV](https://docs.astral.sh/uv/getting-started/installation/) Python package and project manager
--   Python 3.10 or higher
+- [UV](https://docs.astral.sh/uv/getting-started/installation/) Python package and project manager
+- Python 3.10 or higher
 
 ## 🛠️ Installation
 
@@ -87,9 +88,9 @@ The application will be available at `http://localhost:8501`
 
 ## 🐳 Docker Details
 
--   **Base Image**: Python 3.10-slim
--   **Port**: 8501
--   **Package Manager**: uv (faster Python package management)
--   **Health Check**: Included for monitoring
+- **Base Image**: Python 3.10-slim
+- **Port**: 8501
+- **Package Manager**: uv (faster Python package management)
+- **Health Check**: Included for monitoring
 
 Please give a ⭐️ on [GitHub](https://github.com/thisismegopi/nse_utility_reports). Made with ❤️ by [Gopi](https://github.com/thisismegopi).

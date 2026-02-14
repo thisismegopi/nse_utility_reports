@@ -10,6 +10,8 @@ st.write("""
 - 🗒️Index Data
 - 📈Pre Market Data
 - 📅FII and DII Data
+- ✏️F&O - Participant wise Open Interest (Long/Short) ratio
+- ↕️Future Market Movers 
 - 📈Advances/Declines
 - 📉Top 20 Gainers/ Losers
 - 📊Most Active Equities
